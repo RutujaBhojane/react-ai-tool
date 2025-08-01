@@ -26,7 +26,7 @@ function App() {
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
-    console.log(dataString);
+    //console.log(dataString);
     setResult(dataString);
   };
   return (
@@ -34,13 +34,17 @@ function App() {
       <div className="col-span-1 bg-zinc-800"></div>
       <div className="col-span-4 flex flex-col h-screen p-20">
         <div className="container flex-1 overflow-auto">
-          <div className="text-white">
+          <div className="text-zinc-300">
             <ul>
               {/*result*/}
               {result &&
                 result.map((item, index) => (
-                  <li className="text-left p-1">
-                    <Answers ans={item} key={index} />
+                  <li key={index} className="text-left p-1">
+                    <Answers
+                      ans={item}
+                      totalResult={result.length}
+                      index={index}
+                    />
                   </li>
                 ))}
             </ul>
