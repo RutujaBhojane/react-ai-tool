@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import { URL } from "./constants";
+import Answers from "./components/Answers";
 
 function App() {
   const [question, setQuestion] = useState("");
@@ -22,15 +23,28 @@ function App() {
       body: JSON.stringify(payload),
     });
     response = await response.json();
-    // console.log(response.candidates[0].content.parts[0].text);
-    setResult(response.candidates[0].content.parts[0].text);
+    let dataString = response.candidates[0].content.parts[0].text;
+    dataString = dataString.split("* ");
+    dataString = dataString.map((item) => item.trim());
+    console.log(dataString);
+    setResult(dataString);
   };
   return (
     <div className="grid grid-cols-5 h-screen text-center">
       <div className="col-span-1 bg-zinc-800"></div>
       <div className="col-span-4 flex flex-col h-screen p-20">
         <div className="container flex-1 overflow-auto">
-          <div className="text-white">{result}</div>
+          <div className="text-white">
+            <ul>
+              {/*result*/}
+              {result &&
+                result.map((item, index) => (
+                  <li className="text-left p-1">
+                    <Answers ans={item} key={index} />
+                  </li>
+                ))}
+            </ul>
+          </div>
         </div>
         <div className="bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl border border-zinc-700 flex h-16">
           <input
