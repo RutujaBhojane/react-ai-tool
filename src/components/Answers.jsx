@@ -5,7 +5,7 @@ import { replaceHeadingStars } from "../helper";
 const Answers = ({ ans, index, totalResult }) => {
   const [heading, setHeading] = useState(false);
   const [answer, setAnswer] = useState(ans); //ans is the item of the result array
-  console.log(index);
+  //console.log(index);
 
   useEffect(() => {
     if (checkHeading(ans)) {

@@ -5,7 +5,7 @@ import Answers from "./components/Answers";
 
 function App() {
   const [question, setQuestion] = useState("");
-  const [result, setResult] = useState(undefined);
+  const [result, setResult] = useState([]);
   const payload = {
     contents: [
       {
@@ -27,8 +27,13 @@ function App() {
     dataString = dataString.split("* ");
     dataString = dataString.map((item) => item.trim());
     //console.log(dataString);
-    setResult(dataString);
+    setResult([
+      ...result,
+      { type: "q", text: question },
+      { type: "a", text: dataString },
+    ]);
   };
+  console.log(result);
   return (
     <div className="grid grid-cols-5 h-screen text-center">
       <div className="col-span-1 bg-zinc-800"></div>
@@ -36,10 +41,31 @@ function App() {
         <div className="container flex-1 overflow-auto">
           <div className="text-zinc-300">
             <ul>
-              {/*result*/}
+              {result.map((item, index) =>
+                item.type === "q" ? (
+                  <li key={index + Math.random()} className="text-left p-1">
+                    <Answers ans={item.text} totalResult={1} index={index} />
+                  </li>
+                ) : (
+                  item.text.map((ansItem, ansIndex) => (
+                    <li
+                      key={ansIndex + Math.random()}
+                      className="text-left p-1"
+                    >
+                      <Answers
+                        ans={ansItem}
+                        totalResult={item.length}
+                        index={ansIndex}
+                      />
+                    </li>
+                  ))
+                )
+              )}
+            </ul>
+            {/*<ul>
               {result &&
                 result.map((item, index) => (
-                  <li key={index} className="text-left p-1">
+                  <li key={index + Math.random()} className="text-left p-1">
                     <Answers
                       ans={item}
                       totalResult={result.length}
@@ -47,7 +73,7 @@ function App() {
                     />
                   </li>
                 ))}
-            </ul>
+            </ul>*/}
           </div>
         </div>
         <div className="bg-zinc-800 w-1/2 p-1 pr-5 text-white m-auto rounded-4xl border border-zinc-700 flex h-16">
