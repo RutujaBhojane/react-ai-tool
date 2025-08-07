@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { URL } from "./constants";
 import Answers from "./components/Answers";
 
@@ -9,32 +9,37 @@ function App() {
   const [recentHistory, setRecentHistory] = useState(
     JSON.parse(localStorage.getItem("history"))
   );
+  const [selectedHistory, setSelectedHistory] = useState("");
 
-  const payload = {
-    contents: [
-      {
-        parts: [
-          {
-            text: question,
-          },
-        ],
-      },
-    ],
-  };
   const askQuestion = async () => {
-    if (!question) {
+    if (!question && !selectedHistory) {
       return false;
     }
 
-    if (localStorage.getItem("history")) {
-      let history = JSON.parse(localStorage.getItem("history"));
-      history = [question, ...history];
-      localStorage.setItem("history", JSON.stringify(history));
-      setRecentHistory(history);
-    } else {
-      localStorage.setItem("history", JSON.stringify([question]));
-      setRecentHistory([question]);
+    if (question) {
+      if (localStorage.getItem("history")) {
+        let history = JSON.parse(localStorage.getItem("history"));
+        history = [question, ...history];
+        localStorage.setItem("history", JSON.stringify(history));
+        setRecentHistory(history);
+      } else {
+        localStorage.setItem("history", JSON.stringify([question]));
+        setRecentHistory([question]);
+      }
     }
+    const payloadData = question ? question : selectedHistory;
+    const payload = {
+      contents: [
+        {
+          parts: [
+            {
+              text: payloadData,
+            },
+          ],
+        },
+      ],
+    };
+
     let response = await fetch(URL, {
       method: "POST",
       body: JSON.stringify(payload),
@@ -46,7 +51,7 @@ function App() {
     //console.log(dataString);
     setResult([
       ...result,
-      { type: "q", text: question },
+      { type: "q", text: question ? question : selectedHistory },
       { type: "a", text: dataString },
     ]);
     setQuestion("");
@@ -63,6 +68,11 @@ function App() {
       askQuestion();
     }
   };
+
+  useEffect(() => {
+    console.log(selectedHistory);
+    askQuestion();
+  }, [selectedHistory]);
 
   return (
     <div className="grid grid-cols-5 h-screen text-center">
@@ -84,7 +94,10 @@ function App() {
         <ul className="text-left overflow-auto mt-2">
           {recentHistory &&
             recentHistory.map((item) => (
-              <li className="px-4 pl-4 truncate text-zinc-400 text-lg cursor-pointer hover:bg-zinc-700 hover:text-zinc-200">
+              <li
+                onClick={() => setSelectedHistory(item)}
+                className="px-4 pl-4 truncate text-zinc-400 text-lg cursor-pointer hover:bg-zinc-700 hover:text-zinc-200"
+              >
                 {item}
               </li>
             ))}
