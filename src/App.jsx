@@ -22,7 +22,12 @@ function App() {
     if (question) {
       if (localStorage.getItem("history")) {
         let history = JSON.parse(localStorage.getItem("history"));
+        history = history.slice(0, 19); // Limit history to 20 items
         history = [question, ...history];
+        history = history.map(
+          (item) => item.charAt(0).toUpperCase() + item.slice(1).trim() // Capitalize first letter and trim whitespace
+        );
+        history = [...new Set(history)]; // Remove duplicates
         localStorage.setItem("history", JSON.stringify(history));
         setRecentHistory(history);
       } else {
@@ -89,7 +94,7 @@ function App() {
   }, [darkMode]);
 
   return (
-    <div className={darkMode ==="dark" ? "dark" : "Light"}>
+    <div className={darkMode === "dark" ? "dark" : "Light"}>
       <div className="grid grid-cols-5 h-screen text-center">
         <select
           onChange={(event) => setDarkMode(event.target.value)}
