@@ -5,12 +5,12 @@ const QueAns = ({ item, index }) => {
     <>
       <div
         key={index + Math.random()}
-        className={item.type === "q" ? "flex justify-end" : ""}
+        className={item.type === "q" ? "flex justify-end items-center mb-2 list-none p-0 m-0" : ""}
       >
         {item.type === "q" ? (
           <li
             key={index + Math.random()}
-            className="text-right p-1 border-8 dark:bg-zinc-700  dark:border-zinc-700 bg-red-100 border-red-100 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl w-fit"
+            className="px-3 py-1 border-6 dark:bg-zinc-700  dark:border-zinc-700 bg-red-100 border-red-100 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl max-w-[80%]"
           >
             <Answers
               ans={item.text}

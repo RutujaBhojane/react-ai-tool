@@ -134,7 +134,10 @@ function App() {
             </div>
           ) : null}
 
-          <div ref={scrollToAns} className="container flex-1 overflow-auto">
+          <div
+            ref={scrollToAns}
+            className="flex-1 h-full overflow-y-auto px-2 sm:px-3 lg:px-4"
+          >
             <div className="dark:text-zinc-300 text-zinc-900">
               <ul>
                 {result.map((item, index) => (
@@ -143,16 +146,18 @@ function App() {
               </ul>
             </div>
           </div>
-          <div className="dark:bg-zinc-800 bg-red-100 w-1/2 p-1 pr-5 dark:text-white text-zinc-800 m-auto rounded-4xl border border-zinc-700 flex h-16">
+          <div className="dark:bg-zinc-800 bg-red-100 w-full max-w-3xl mx-auto p-1 pr-5 dark:text-white text-zinc-800 m-auto rounded-4xl border border-zinc-700 flex h-16">
             <input
               value={question}
               onKeyDown={isEnter}
               onChange={(event) => setQuestion(event.target.value)}
-              className="w-full h-full p-3 outline-none"
+              className="flex-1 px-3 outline-none"
               type="text"
               placeholder="Ask me anything"
             />
-            <button onClick={askQuestion}>Ask</button>
+            <button className="px-4 cursor-pointer" onClick={askQuestion}>
+              Ask
+            </button>
           </div>
         </div>
       </div>
