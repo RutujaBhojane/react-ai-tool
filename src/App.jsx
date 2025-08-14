@@ -78,14 +78,14 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(selectedHistory);
+    //console.log(selectedHistory);
     askQuestion();
   }, [selectedHistory]);
 
   // Dark mode toggle feature
   const [darkMode, setDarkMode] = useState("dark");
   useEffect(() => {
-    console.log(darkMode);
+    //console.log(darkMode);
     if (darkMode === "dark") {
       document.documentElement.classList.add("dark");
     } else {
